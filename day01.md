@@ -59,4 +59,16 @@
         - 소켓 대 소켓의 연결 : 반드시 1 대 1 구조
 
     - 비 연결지향형 소켓(SOCK_DGRAM) : UDP
-    
+        - 전송순서에 상관없이 빠른 속도의 전송 지향
+        - 데이터 손실 및 파손의 우려 o
+        - 데이터의 경계가 존재
+        - 한번에 전송가능한 데이터 크기가 제한
+
+- 소켓 IP주소 / PORT번호
+    - 인터넷 주소(Internet Address)
+
+        ![IPv4 인터넷 주소 체계](https://raw.githubusercontent.com/HyungJuu/basic-TCP-IP-2024/main/images/tcp003.png)
+
+    - 클래스별 네트워크 주소, 호스트 주소 경계
+
+        ![클래스](https://raw.githubusercontent.com/HyungJuu/basic-TCP-IP-2024/main/images/tcp002.png)

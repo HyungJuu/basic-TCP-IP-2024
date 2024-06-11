@@ -1,51 +1,155 @@
 ## 1일차(24.06.11) ~p.79
-- tcp/ip : cmd &rarr; ipconfig
+- Windows IP 구성 확인 : cmd &rarr; ipconfig
+- TCP/IP
     - IP : 외부에서 해당 컴퓨터를 찾아오는데 필요한 주소
     - IPv4 | IPv6 &rarr; 버전차이
         - IPv4 : 총 4개의 바이트(byte)로 구성(현재 사용됨)
-        - IPv6 : IPv4의 할당량이 부족할 때 대체 아이피 주소
-        - ex) 192.168.5.2
-    - 기본 게이트웨이 : 컴퓨터로 들어오는 출입문(1번). IP와 3byte까지는 동일함
-        - ex) 192.168.5.1
+        - IPv6 : IPv4로 할당할 수 있는 인터넷 주소가 부족할 때 대체할 아이피 주소
+        - ex) 192.168.10.10
+    - 기본 게이트웨이 : 컴퓨터로 들어오는 출입문(1). IP와 3byte까지는 동일함
+        - ex) 192.168.10.1
     - 서브넷마스크
 
-- 전송방식 차이
-    - TCP(Transmission Control Protocol) : 정확한 데이터 전송. 데이터를 잃어버리면 안될 때 사용 
-        - ex) 압축파일
-    - UDP(User Datagram Protocol) : 데이터가 한두개 유실되어도 문제가 없을 때 사용. 보안,신뢰성 < 전송속도, 효율성
-        - ex) 비디오 재생, 미디어 전송
+- 전송방식 (TCP / UDP)
+    - TCP(Transmission Control Protocol) : 전송 제어 프로토콜
+        - 정확한 데이터 전송. 데이터를 잃어버리면 안될 때 사용 
+        - ex) HTTP 통신, 이메일, 압축파일 전송
+    - UDP(User Datagram Protocol) : 사용자 데이터그램 프로토콜
+        - 데이터가 조금 누락되어도 문제가 없을 때 사용
+        - 보안, 신뢰성 << 전송속도, 효율성
+        - ex) 비디오 재생, 미디어 전송, 실시간 동영상서비스(브로드캐스팅)
 
-- 네트워크 프로세스 : **소말리아**
-    - 소 &rarr; 소켓(socket) : 휴대폰
-    - 말 &rarr; 바인더(bind) : 전화번호 할당
-    - 리 &rarr; 리슨(listen) : 개통
-    - 아 &rarr; 엑셉트(accept) : 통화기능
+- 네트워크 프로그래밍(소켓 프로그래밍) 이해 
+    - **소말리아** ★★
+        - 소 &rarr; 소켓(socket) : 휴대폰 기기
+        - 말 &rarr; 바인드(bind) : 전화번호 할당
+        - 리 &rarr; 리슨(listen) : 개통 완료
+        - 아 &rarr; 엑셉트(accept) : 통화 기능
 
-    ``` c
-    #include <sys/socket.h>
-    // 소켓 생성 -> socket 함수 호출
-    int socket(int domain, int type, int protocol); // 성공 시 파일 디스크립터, 실패 시 -1 반환
-    // IP 주소와 PORT번호 할당 -> bind 함수 호출
-    int bind(int sockfd, struct sockaddr *myaddr, socklen_t addrlen); // 성공 시 0, 실패 시 -1 반환
-    // 연결요청 가능상태로 변경 -> listen 함수 호출
-    int listen(int sockfd, int backlog); // 성공 시 0, 실패 시 -1 반환
-    // 연결요청에 대한 수락 -> accept 함수 호출
-    int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen); // 성공 시 파일 디스크립터, 실패 시 -1 반환
-    ```
 
-- 리눅스 기반
+    - 서버 소켓, 리스닝 소켓
+        - 서버 프로그램에서 생성한 소켓
+            - 서버(Server) : 연결 요청을 수락(허용)하는 프로그램
+                - 연결을 요청하는 클라이언트보다 먼서 실행되어야 함
+                - 복잡한 실행과정
+
+            ``` c
+            #include <sys/socket.h>
+            // 소켓 생성 -> socket 함수 호출
+            int socket(int domain, int type, int protocol); // 성공 시 파일 디스크립터, 실패 시 -1 반환
+            // IP와 PORT번호 할당 -> bind 함수 호출
+            int bind(int sockfd, struct sockaddr *myaddr, socklen_t addrlen); // 성공 시 0, 실패 시 -1 반환
+            // 연결요청 가능상태로 변경 -> listen 함수 호출
+            int listen(int sockfd, int backlog); // 성공 시 0, 실패 시 -1 반환
+            // 연결요청에 대한 수락 -> accept 함수 호출
+            int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen); // 성공 시 파일 디스크립터, 실패 시 -1 반환
+            // accept 함수 호출 이후에 데이터 송수신이 가능하다. 단, 연결요청이 있을 때만 함수가 반환을 한다.
+            ```
+
+    - 클라이언트 소켓
+        - 연결 요청을 진행하는 소켓
+            - socket 함수호출(소켓 생성) + connect 함수호출(서버로 연결요청)
+            - 상대적으로 간단한 실행과정
+
+            ```c
+            #include <sys/socket.h>
+            int connect(int sockfd, struct sockaddr *serv_addr, socklen_t addrlen);
+            // 성공 시 0, 실패 시 -1 반환
+            ```
+
+- 리눅스 기반 파일 조작
+    - 파일 디스크립터 (File Desciptor)
+        - 운영체제가 만든 파일 또는 소켓을 구분하기 위한 일종의 숫자
+        - 파일과 소켓은 생성과정을 거쳐야 파일 디스크립터가 할당 (일반적)
+        - 리눅스에서 제공하는 함수
+            - 별도의 생성과정 필요x, 프로그램 실행 시 자동할당되는 파일 디스크립터
+
+                ![리눅스 파일 디스크립터](https://raw.githubusercontent.com/HyungJuu/basic-TCP-IP-2024/main/images/tcp005.png)
+
     - 파일 조작
-        - 파일 열기 : open()
-        - 파일 닫기 : close()
-        - 파일 쓰기 : write() &rarr; 데이터를 출력(전송)하는 함수
+        - 파일 열기
+            - 두개의 인자
+            - open(파일의 이름 및 경로 정보, 파일 오픈모드)
 
-    - unsigned : 양수
-    - ssize-t 등 앞에 붙는 s는 signed를 의미
+            ```c
+            #include <sys/types.h>
+            #include <sys/stat.h>
+            #include <fcntl.h>
 
-- 프로토콜 (Protocol) 
-    - 약속의 의미
-    - 컴퓨터 간의 데이터 송수신에 필요한 통신규약
-    - 소켓 생성시 기본적인 프로토콜 지정필요
+            int open(const char *path, int flag);
+            // 성공 시 파일 디스크립터, 실패 시 -1 반환
+
+            /*
+                첫번째 인자 : 파일 이름을 나타내는 문자열의 주소 값
+                두번째 인자 : 파일의 오픈모드 정보
+            */
+            ```
+
+            - 파일 오픈모드
+                |오픈모드|의미|
+                |:------:|:------|
+                |O_CREAT|필요하면 파일을 생성|
+                |O_TRUNC|기존 데이터 전부 삭제|
+                |O_APPEND|기존 데이터를 보존하고, 뒤에 이어서 저장|
+                |O_RDONLY|읽기 전용으로 파일 오픈|
+                |O_WRONLY|쓰기 전용으로 파일 오픈|
+                |O_RDWR|읽기, 쓰기 겸용으로 파일 오픈|
+
+        - 파일 닫기 
+            - 한개의 인자
+            - close(파일 디스크립터)
+
+            ```c
+            #include <unistd.h>
+
+            int close(int fd);
+            // 성공 시 0, 실패 시 -1 반환
+
+            /* 인자 : 닫고자하는 파일(소켓)의 파일 디스크립터 */
+            ```
+
+        - 파일 데이터 쓰기
+            - 세개의 인자
+            - 데이터를 출력(전송)하는 함수
+            - write(파일 디스크립터, 버퍼, 데이터 바이트 수)
+
+            ```c
+            #include <unistd.h>
+
+            ssize_t wirte(int fd, const void *buf, size_t nbytes);
+            // 성공 시 전달한 바이트 수, 실패 시 -1 반환
+            /* 
+                첫번째 인자 : 데이터 전송 대상을 나타내는 파일 디스크립터
+                두번째 인자 : 전송할 데이터가 저장된 버퍼의 주소 값
+                세번째 인자 : 전송할 데이터의 바이트 수 
+            */
+            ```
+
+            - unsigned : 양수
+            - ssize-t 등 앞에 붙는 s는 signed를 의미
+
+        - 파일 읽기
+            - 세개의 인자
+            - 데이터를 입력(수신)하는 함수
+            - read(파일 디스크립터, 버퍼, 데이터 바이트 수)
+
+            ```c
+            #include <unistd.h>
+
+            ssize_t read(int fd, void *buf, size_t nbytes);
+            // 성공 시 수신한 바이트 수(단 파일의 끝을 만나면 0), 실패 시 -1 반환
+            /*
+                첫번째 인자 : 데이터 수신 대상을 나타내는 파일 디스크립터
+                두번째 인자 : 수신한 데이터를 저장할 버퍼의 주소 값
+                세번째 인자 : 수신할 최대 바이트 수 
+            */
+            ```
+
+- 소켓의 프로토콜
+    - 프로토콜 (Protocol) 
+        - 약속의 의미
+        - 컴퓨터 간의 데이터 송수신에 필요한 통신규약
+        - 소켓 생성시 기본적인 프로토콜 지정필요
 
 - 프로토콜 체계
 

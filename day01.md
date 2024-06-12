@@ -170,62 +170,63 @@
             - 데이터의 경계가 존재
             - 한번에 전송가능한 데이터 크기가 제한
 
-- IP주소와 PORT번호
-    - IP주소
-        - IPv4 : 4바이트 주소체계 [1Byte] [1Byte] [1Byte] [1Byte]
-        - IPv6 : 16바이트 주소체계 [4Byte] [4Byte] [4Byte] [4Byte]
-            
-            ![IPv4 인터넷 주소체계](https://raw.githubusercontent.com/HyungJuu/basic-TCP-IP-2024/main/images/tcp003.png)
-            
-    - 클래스별 네트워크 주소, 호스트 주소 경계
+- 주소체계와 데이터 정렬
+    - IP주소와 PORT번호
+        - IP주소
+            - IPv4 : 4바이트 주소체계 [1Byte] [1Byte] [1Byte] [1Byte]
+            - IPv6 : 16바이트 주소체계 [4Byte] [4Byte] [4Byte] [4Byte]
+                
+                ![IPv4 인터넷 주소체계](https://raw.githubusercontent.com/HyungJuu/basic-TCP-IP-2024/main/images/tcp003.png)
+                
+        - 클래스별 네트워크 주소, 호스트 주소 경계
 
-        <!-- ![클래스](https://raw.githubusercontent.com/HyungJuu/basic-TCP-IP-2024/main/images/tcp002.png) -->
-        <img src="https://raw.githubusercontent.com/HyungJuu/basic-TCP-IP-2024/main/images/tcp002.png" width="650" alt="클래스">
+            <!-- ![클래스](https://raw.githubusercontent.com/HyungJuu/basic-TCP-IP-2024/main/images/tcp002.png) -->
+            <img src="https://raw.githubusercontent.com/HyungJuu/basic-TCP-IP-2024/main/images/tcp002.png" width="650" alt="클래스">
 
-    - PORT번호
-        - 소켓을 구분하는 용도로 사용
-        - 하나의 프로그램 내에 둘 이상의 소켓이 존재할 수 있음 &rarr; 둘 이상의 포트가 하나의 프로그램에 의해 할당 가능
-        - 16비트로 표현 (0 ~ 65535)
+        - PORT번호
+            - 소켓을 구분하는 용도로 사용
+            - 하나의 프로그램 내에 둘 이상의 소켓이 존재할 수 있음 &rarr; 둘 이상의 포트가 하나의 프로그램에 의해 할당 가능
+            - 16비트로 표현 (0 ~ 65535)
 
-- 주소정보의 표현
-    - IPv4 기반 주소표현 구조체
+    - 주소정보의 표현
+        - IPv4 기반 주소표현 구조체
 
-        ```c
-        struct sockaddr_in
-            {
-                sa_family_t     sin_family;     // 주소체계
-                unit16_t        sin_port;       // 16비트 TCP/UDP PORT번호 -> 네트워크 바이트 순서로 저장
-                struct in_addr  sin_addr;       // 32비트 IP주소 -> 네트워크 바이트 순서로 저장
-                char            sin_zero[8];    // 사용되지 않음
-            }
+            ```c
+            struct sockaddr_in
+                {
+                    sa_family_t     sin_family;     // 주소체계
+                    unit16_t        sin_port;       // 16비트 TCP/UDP PORT번호 -> 네트워크 바이트 순서로 저장
+                    struct in_addr  sin_addr;       // 32비트 IP주소 -> 네트워크 바이트 순서로 저장
+                    char            sin_zero[8];    // 사용되지 않음
+                }
 
-            struct in_addr
-            {
-                in_addr_t       s_addr;         // 32비트 IPv4 인터넷 주소
-            }
-        ```
+                struct in_addr
+                {
+                    in_addr_t       s_addr;         // 32비트 IPv4 인터넷 주소
+                }
+            ```
 
-        <!-- - POSIX(Portable Operating System Interface) : 유닉스 계열의 운영체제에 적용하기위한 표준
-            | 자료형 이름 | 자료형에 담길 정보 | 선언된 헤더파일 |
-            | :---------: | :----------------- | :-------------- |
-            | int8_t | | | -->
+            <!-- - POSIX(Portable Operating System Interface) : 유닉스 계열의 운영체제에 적용하기위한 표준
+                | 자료형 이름 | 자료형에 담길 정보 | 선언된 헤더파일 |
+                | :---------: | :----------------- | :-------------- |
+                | int8_t | | | -->
 
-- 네트워크 바이트 순서와 인터넷 주소 변환
-    - 바이트 순서 & 네트워크 바이트 순서
-        - CPU가 데이터를 메모리에 저장하는 방식
-            - 빅 엔디안(Big Endian)
-                - 상위 바이트의 값을 작은 번지수에 저장
-            - 리틀 엔디안(Little Endian)
-                - 상위 바이트의 값을 큰 번지수에 저장
+    - 네트워크 바이트 순서와 인터넷 주소 변환
+        - 바이트 순서 & 네트워크 바이트 순서
+            - CPU가 데이터를 메모리에 저장하는 방식
+                - 빅 엔디안(Big Endian)
+                    - 상위 바이트의 값을 작은 번지수에 저장
+                - 리틀 엔디안(Little Endian)
+                    - 상위 바이트의 값을 큰 번지수에 저장
 
-            ![CPU 데이터 저장방식](https://raw.githubusercontent.com/HyungJuu/basic-TCP-IP-2024/main/images/tcp006.png)
+                ![CPU 데이터 저장방식](https://raw.githubusercontent.com/HyungJuu/basic-TCP-IP-2024/main/images/tcp006.png)
 
-        - 호스트 바이트 순서(Host Byte Order) : CPU의 데이터 저장방식
-            - 인텔계열 CPU : 리틀 엔디안 방식으로 데이터를 저장함
+            - 호스트 바이트 순서(Host Byte Order) : CPU의 데이터 저장방식
+                - 인텔계열 CPU : 리틀 엔디안 방식으로 데이터를 저장함
 
-        - 네트워크 바이트 순서(Network Byte Order) : 빅 엔디안 방식으로 통일!
-            - 모든 컴퓨터는 수신된 데이터가 네트워크 바이트 순서로 정렬되어있음
-            - 리틀 엔디안 시스템에서는 데이터 전송하기에 앞서 빅 엔디안 정렬방식으로 데이터를 재정렬
+            - 네트워크 바이트 순서(Network Byte Order) : 빅 엔디안 방식으로 통일!
+                - 모든 컴퓨터는 수신된 데이터가 네트워크 바이트 순서로 정렬되어있음
+                - 리틀 엔디안 시스템에서는 데이터 전송하기에 앞서 빅 엔디안 정렬방식으로 데이터를 재정렬
 
         - 바이트 순서 변환(Endian Conversions)
             - h : 호스트(host) 바이트 순서

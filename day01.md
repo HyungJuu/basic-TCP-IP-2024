@@ -227,48 +227,48 @@
             - 모든 컴퓨터는 수신된 데이터가 네트워크 바이트 순서로 정렬되어있음
             - 리틀 엔디안 시스템에서는 데이터 전송하기에 앞서 빅 엔디안 정렬방식으로 데이터를 재정렬
 
-        - 바이트 순서 변환(Endian Conversions)
-            - h : 호스트(host) 바이트 순서
-            - n : 네트워크(network) 바이트 순서
-            - s : short(2바이트) &rarr; 주로 PORT번호의 변환에 사용
-                - htons : short형 데이터를 호스트 바이트 순서 &rarr; 네트워크 바이트 순서로 변환
-                - ntohs : short형 데이터를 네트워크 바이트 순서 &rarr; 호스트 바이트 순서로 변환
+    - 바이트 순서 변환(Endian Conversions)
+        - h : 호스트(host) 바이트 순서
+        - n : 네트워크(network) 바이트 순서
+        - s : short(2바이트) &rarr; 주로 PORT번호의 변환에 사용
+            - htons : short형 데이터를 호스트 바이트 순서 &rarr; 네트워크 바이트 순서로 변환
+            - ntohs : short형 데이터를 네트워크 바이트 순서 &rarr; 호스트 바이트 순서로 변환
 
-            - l : long(4바이트) &rarr; 주로 IP주소의 변환에 사용
-                - htonl : long형 데이터를 호스트 바이트 순서 &rarr; 네트워크 바이트 순서로 변환
-                - ntohl : long형 데이터를 네트워크 바이트 순서 &rarr; 호스트 바이트 순서로 변환
+        - l : long(4바이트) &rarr; 주로 IP주소의 변환에 사용
+            - htonl : long형 데이터를 호스트 바이트 순서 &rarr; 네트워크 바이트 순서로 변환
+            - ntohl : long형 데이터를 네트워크 바이트 순서 &rarr; 호스트 바이트 순서로 변환
 
-                ``` c
-                // 예제(p.74) endian_conv.c
-                #include <stdio.h>
-                #include <arpa/inet.h>
-                
-                int main(int argc, char *argv[])
-                {
-                    unsigned short host_port = 0x1234;
-                    unsigned short net_port;
-                    unsigned long host_addr = 0x12345678;
-                    unsigned long net_addr;
+            ``` c
+            // 예제(p.74) endian_conv.c
+            #include <stdio.h>
+            #include <arpa/inet.h>
+            
+            int main(int argc, char *argv[])
+            {
+                unsigned short host_port = 0x1234;
+                unsigned short net_port;
+                unsigned long host_addr = 0x12345678;
+                unsigned long net_addr;
 
-                // 바이트 순서 변환
-                net_port = htons(host_port); // short형 데이터 : 호스트 -> 네트워크
-                net_addr = htonl(host_addr); // long형 데이터 : 호스트 -> 네트워크
+            // 바이트 순서 변환
+            net_port = htons(host_port); // short형 데이터 : 호스트 -> 네트워크
+            net_addr = htonl(host_addr); // long형 데이터 : 호스트 -> 네트워크
 
-                printf("Host ordered prot : %#x \n", host_port);
-                printf("Network ordered port : %#x \n", net_port);
-                printf("Host ordered address : %#lx \n", host_addr);
-                printf("Network ordered address : %#lx \n", net_addr);
-                return 0;
-                }
-                ```
+            printf("Host ordered prot : %#x \n", host_port);
+            printf("Network ordered port : %#x \n", net_port);
+            printf("Host ordered address : %#lx \n", host_addr);
+            printf("Network ordered address : %#lx \n", net_addr);
+            return 0;
+            }
+            ```
 
-                ``` c
-                // 리틀 엔디안 기준으로 정렬하는 CPU에서의 실행결과
-                Host ordered prot : 0x1234
-                Network ordered port : 0x3412
-                Host ordered address : 0x12345678
-                Network ordered address : 0x78563412
+            ``` c
+            // 리틀 엔디안 기준으로 정렬하는 CPU에서의 실행결과
+            Host ordered prot : 0x1234
+            Network ordered port : 0x3412
+            Host ordered address : 0x12345678
+            Network ordered address : 0x78563412
 
-                // 빅 엔디안 기준으로 정렬하는 CPU 상에서 실행할 경우, 변환 이후에도 값이 달라지지 않는다.
-                // 인텔, AMD 계열의 CPU -> 리틀 엔디안 기준으로 정렬
-                ```
+            // 빅 엔디안 기준으로 정렬하는 CPU 상에서 실행할 경우, 변환 이후에도 값이 달라지지 않는다.
+            // 인텔, AMD 계열의 CPU -> 리틀 엔디안 기준으로 정렬
+            ```

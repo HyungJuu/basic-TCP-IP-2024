@@ -5,7 +5,7 @@
 int main(int argc, char *agrv[])
 {
 	int fds1[2], fds2[2];
-	char str1[] = "Yho are you?";
+	char str1[] = "Who are you?";
 	char str2[] = "Thank you for your message";
 	char buf[BUF_SIZE];
 	pid_t pid;

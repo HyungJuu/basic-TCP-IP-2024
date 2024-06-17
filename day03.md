@@ -29,7 +29,7 @@
 - 소켓 연결 종료과정
     - close 함수
         - 완전종료를 의미
-        - 한쪽에서 close함수를 호출할 경우 **일방적으로** 연결이 종료됨
+        - 한쪽에서 close함수를 호출할 경우 `일방적`으로 연결이 종료됨
         - 즉, 데이터의 송수신 모두 불가능한 상황
     
     - **Half-close**
@@ -62,18 +62,20 @@
 
             | 종료방법 | |
             | :-- | :-- |
-            | SHUT_RD | 입력 스트림 종료 |
-            | SHUT_WR | 출력 스트림 종료 <br><small> (단, 출력 버퍼에 전송되지 못한 상태의 데이터가 존재할 경우, <br> 해당 데이터는 목적지로 전송됨) </small> |
-            | SHUT_RDWR | 입출력 스트림 종료 <br><small> (shutdown 함수의 인자를 각각 SHUT_RD, SHUT_WR로 두번 호출한 것과 같음) </small> |
+            | `SHUT_RD` | 입력 스트림 종료 |
+            | `SHUT_WR` | 출력 스트림 종료 <br><small> (단, 출력 버퍼에 전송되지 못한 상태의 데이터가 존재할 경우, <br> 해당 데이터는 목적지로 전송됨) </small> |
+            | `SHUT_RDWR` | 입출력 스트림 종료 <br><small> (shutdown 함수의 인자를 각각 SHUT_RD, SHUT_WR로 두번 호출한 것과 같음) </small> |
 
 
-
+---
 * sudo raspi-config -> 6 -> A1
-
+---
 
 - DNS (Domain Name System)
     - 도메인 이름 : 기억하고 표현하기 좋은 형태의 이름을 IP주소에 부여하여, IP주소 대신 사용
     - 도메인 이름의 IP주소 확인하고 싶으면... 콘솔창 입력  
     &rarr; ping 도메인명  
     ex) ping www.naver.com
+
+    ... 작성중
         

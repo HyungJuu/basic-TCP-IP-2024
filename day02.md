@@ -45,6 +45,7 @@
                 // 상수 INADDR_ANY를 통해 서버의 IP주소를 할당
                 addr.sin_port = htons(atoi(serv_port));
                 ```
+---
 
 - TCP 기반 서버/클라이언트
     - TCP / UDP에 대한 이해
@@ -68,7 +69,7 @@
         
         - TCP/UDP 계층(= 전송(Transport) 계층)
             - 실제 데이터의 송수신과 관련있는 계층
-                | TCP | UDP|
+                | TCP | UDP |
                 | :--- | :--- |
                 | 데이터 전송을 보장하는 프로토콜 | 데이터 전송을 보장하지 않는 프로토콜 |
                 | 신뢰성 보장 o | 신뢰성 보장 x |
@@ -107,6 +108,7 @@
 
             ![함수호출 순서](https://raw.githubusercontent.com/HyungJuu/basic-TCP-IP-2024/main/images/tcp011.png)
 
+---
 * 서버-클라이언트
     - 검색창(192.168.0.1) &rarr; 공유기 관리자모드 접속 &rarr; 포트포워드 설정 &rarr; 내부 ip주소, 외부포트
-    
+---

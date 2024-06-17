@@ -49,6 +49,42 @@
 - 표준 입출력 함수
     - 장점  
     &rarr; 이식성이 좋다  
-    &rarr; 버퍼링을 통한 성능의 향상에 도움이 된다
-
+    &rarr; 버퍼링을 통한 성능의 향상에 도움이 된다  
+        
         ![표준입출력함수](https://raw.githubusercontent.com/HyungJuu/basic-TCP-IP-2024/main/images/tcp017.png)
+        
+        - 표준입출력 함수 사용시 제공되는 버퍼는 오로지 성능 향상만을 목적으로 한다
+
+        - 버퍼링
+            - 전송하는 데이터의 양
+            - 출력버퍼로의 데이터 이동 횟수  
+            &rarr; 두 관점에서 성능의 우월함 
+    
+    - 단점  
+    &rarr; 양방향 통신이 어려움  
+    &rarr; 상황에 따라 fflush 함수의 호출이 빈번히 등장 = 버퍼링 기반의 성능향상에 영향을 미침  
+    &rarr; 파일 디스크림터를 FILE 구조체의 포인터로 변환해야 함
+
+    - FILE 구조체의 포인터 변환
+        - fdopen 함수
+
+            ```c
+            #include <stdio.h>
+
+            FILE * fdopen(int fildes, const char * mode);
+            // 성공시 변환된 FILE 구조체 포인터, 실패시 NULL 반환
+
+            // fildes : 변환할 파일 디스크립터를 인자로 전달
+            // mode : 생성할 FILE 구조체 포인터의 모드(mode)정보 전달
+            ```
+        
+        - fileno 함수
+            - fdopen 함수와 반대기능을 제공
+
+            ```c
+            #include <stdio.h>
+
+            int fileno(FILE * stream);
+            // 성공시 변환된 파일 디스크립터, 실패시 -1 반환
+            ```
+        

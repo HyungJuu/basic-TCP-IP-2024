@@ -106,3 +106,7 @@
         - lterative 서버의 함수호출 순서
 
             ![함수호출 순서](https://raw.githubusercontent.com/HyungJuu/basic-TCP-IP-2024/main/images/tcp011.png)
+
+* 서버-클라이언트
+    - 검색창(192.168.0.1) &rarr; 공유기 관리자모드 접속 &rarr; 포트포워드 설정 &rarr; 내부 ip주소, 외부포트
+    

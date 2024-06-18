@@ -29,3 +29,5 @@
 ## [4일차(24.06.14)](https://github.com/HyungJuu/basic-TCP-IP-2024/blob/main/day04.md)
 
 ## [5일차(24.06.17)](https://github.com/HyungJuu/basic-TCP-IP-2024/blob/main/day05.md)
+
+## [6일차(24.06.18)](https://github.com/HyungJuu/basic-TCP-IP-2024/blob/main/day06.md)

@@ -67,11 +67,10 @@
        }
 
        else // 클라이언트에서 수신된 정보가 따로 없음 ==> 최초 접속
-          if(write(clnt_sock, webpage, sizeof(webpage)) == -1)
-          	puts("write error!!");
+          if(write(clnt_sock, webpage, sizeof(webpage)) == -1) puts("write error!!");
        puts("closing");
        close(clnt_sock);
    }
-       close(serv_sock);
-       return 0;
+   close(serv_sock);
+   return 0;
 }

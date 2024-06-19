@@ -12,14 +12,14 @@
 #define BUF_SIZE 1024
 
  char webpage[] = "HTTP/1.1 200 OK\r\n"
-                   "Server:Linux Web Server\r\n"
+                  "Server:Linux Web Server\r\n"
                   "Content-Type: text/html; charset=UTF-8\r\n\r\n"
                   "<!DOCTYPE html>\r\n"
                   "<html><head><title> My Web Page </title>\r\n"
-                   "<link rel=\"icon\" href=\"data:,\">\r\n"
+                  "<link rel=\"icon\" href=\"data:,\">\r\n"
                   "<style>body {background-color: #C8EFD4 }</style></head>\r\n"
-                  "<body><center><h1>Hello! It's me!</h1><br>\r\n"
-                   "<img src=\"곤뇽.png\"></center></body></html>\r\n";
+                  "<body><center><h1>Hello! It's me! Gonnong!!</h1><br>\r\n"
+                  "<img src=\"gonnong.png\" width=60%></center></body></html>\r\n";
 
  int main(int argc, char *argv[])
  {
@@ -46,28 +46,29 @@
        read(clnt_sock, buf, BUF_SIZE); // 클라이언트에서 수신된 정보
        printf("%s\n", buf); // 클라이언트에 대한 정보 출력
 
-       if(strstr(buf, "곤뇽.png") != NULL) // 클라이언트에서 수신된 정보에 사진이 포함되어 있으면
+       if(strstr(buf, "gonnong.png") != NULL) // 클라이언트에서 수신된 정보에 사진이 포함되어 있으면
        {
-       		fdimg = open("곤뇽.png", O_RDONLY);  // 서버 이미지파일 열기
+       		fdimg = open("gonnong.png", O_RDONLY);  // 서버 이미지파일 열기
           if((img_size = read(fdimg, img_buf, sizeof(img_buf))) == -1) puts("file read error!!");
           // img_buf에 해당 이미지 정보 담기
           close(fdimg); // 파일디스크립터 닫기
 
           sprintf(buf, "HTTP/1.1 200 OK\r\n"
-           "Server: Linux Web Server\r\n"
-           "Content-Type: image/jpeg\r\n"
-           "Content-Length: %ld\r\n\r\n", img_size); // 헤더 정보 buf에 담기
+           						"Server: Linux Web Server\r\n"
+					            "Content-Type: image/jpeg\r\n"
+           						"Content-Length: %ld\r\n\r\n", img_size); // 헤더 정보 buf에 담기
 
-					// 헤더 전송
+					/*  헤더 전송 */
        		if(write(clnt_sock, buf, strlen(buf)) < 0) puts("write error");
-					// 이미지 전송
+					/* 이미지 전송 */
           if(write(clnt_sock, img_buf, img_size) < 0) puts("write error");
 
           close(clnt_sock);
        }
 
        else // 클라이언트에서 수신된 정보가 따로 없음 ==> 최초 접속
-          if(write(clnt_sock, webpage, sizeof(webpage)) == -1) puts("write error!!");
+          if(write(clnt_sock, webpage, sizeof(webpage)) == -1)
+          	puts("write error!!");
        puts("closing");
        close(clnt_sock);
    }
